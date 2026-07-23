@@ -50,11 +50,7 @@ print(f"Agent listo (name: {agent.name}, version: {agent.version})\n")
 # Cliente OpenAI apuntado al endpoint del agente -> hereda sus instructions
 openai = project.get_openai_client(agent_name=AGENT_NAME)
 
-
-def ask(question: str) -> str:
-    response = openai.responses.create(model=MODEL, input=question)
-    return response.output_text
-
+conversation = openai.conversations.create()
 
 if __name__ == "__main__":
     print("Pregúntame por los ingredientes de un maki (Ctrl+C para salir)\n")
@@ -63,6 +59,10 @@ if __name__ == "__main__":
             question = input("Tú: ").strip()
             if not question:
                 continue
-            print(f"Agente: {ask(question)}\n")
+            response = openai.responses.create(
+                conversation=conversation.id,
+                input=question,
+            )
+            print(f"Agente: {response.output_text}\n")
     except KeyboardInterrupt:
         print("\nHasta luego!")
