@@ -11,3 +11,5 @@ wheels/
 
 .env
 .idea/
+
+.rag_state.json
